@@ -6,7 +6,7 @@ const Home: NextPage = () => {
 	return (
 		<div className="flex min-h-screen flex-col items-center justify-center py-2">
 			<Head>
-				<title>Dreamer V3 Javascript Inference</title>
+				<title>Dreamer V3 Inference on the Web</title>
 				<link
 					rel="icon"
 					href="/favicon.ico"
@@ -20,7 +20,7 @@ const Home: NextPage = () => {
 						className="text-blue-600"
 						href="https://github.com/lipj01/dreamerv3js"
 					>
-						Dreamer V3 Javascript Inference
+						Dreamer V3 Inference on the Web
 					</a>
 				</h1>
 			</main>
