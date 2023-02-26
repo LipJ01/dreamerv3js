@@ -137,4 +137,4 @@ environments.
 [tweet]: https://twitter.com/danijarh/status/1613161946223677441
 [example]: https://github.com/danijar/dreamerv3/blob/main/example.py
 [tfjs]: https://www.tensorflow.org/js
-[demo]: https://
+[demo]: https://dreamerv3js.vercel.app/
