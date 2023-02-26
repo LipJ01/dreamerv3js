@@ -7,9 +7,10 @@ def main():
 
   # See configs.yaml for all options.
   config = embodied.Config(dreamerv3.configs['defaults'])
-  config = config.update(dreamerv3.configs['medium'])
+  config = config.update(dreamerv3.configs['atari'])
+  config = config.update(dreamerv3.configs['small'])
   config = config.update({
-      'logdir': '~/logdir/run1',
+      'logdir': 'logdir/run2',
       'run.train_ratio': 64,
       'run.log_every': 30,  # Seconds
       'batch_size': 16,
@@ -20,6 +21,8 @@ def main():
       'decoder.cnn_keys': 'image',
       # 'jax.platform': 'cpu',
   })
+
+#   config = config.update(dreamerv3.configs['debug'])
   config = embodied.Flags(config).parse()
 
   logdir = embodied.Path(config.logdir)
@@ -32,10 +35,15 @@ def main():
       # embodied.logger.MLFlowOutput(logdir.name),
   ])
 
-  import crafter
-  from embodied.envs import from_gym
-  env = crafter.Env()  # Replace this with your Gym env.
-  env = from_gym.FromGym(env)
+#   import crafter
+  from embodied.envs import from_gym # type: ignore
+  from embodied.envs import atari # type: ignore
+  from gym import envs
+  # env = envs.make('Breakout-v4')
+  # env = envs.make('Pong-v0')
+#   env = crafter.Env()  # Replace this with your Gym env.
+  env = atari.Atari("breakout", size=(64, 64), repeat=4, sticky=True, gray=False, actions='all', lives='unused', noops= 0, resize='opencv')
+  # env = from_gym.FromGym(env)
   env = dreamerv3.wrap_env(env, config)
   env = embodied.BatchEnv([env], parallel=False)
 
@@ -44,7 +52,7 @@ def main():
       config.batch_length, config.replay_size, logdir / 'replay')
   args = embodied.Config(
       **config.run, logdir=config.logdir,
-      batch_steps=config.batch_size * config.batch_length)
+      batch_steps=config.batch_size * config.batch_length) # type: ignore
   embodied.run.train(agent, env, replay, logger, args)
   # embodied.run.eval_only(agent, env, logger, args)
 
