@@ -58,7 +58,7 @@ def javascript_save(agent, env, logger, args):
   policy = lambda *args: agent.policy(*args, mode='eval')
   jax_conversion.convert_jax(
       apply_fn=policy,
-      params=checkpoint.agent.params,
+      params=checkpoint._values['agent'],
       input_signatures=[(np.zeros((1, 64, 64, 3), dtype=np.float32),)],
       model_dir='tfjs_model')
   
