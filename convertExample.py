@@ -36,13 +36,16 @@ def main():
   ])
 
 #   import crafter
-  from embodied.envs import from_gym # type: ignore
-  from embodied.envs import atari # type: ignore
+  from embodied.envs import from_gym  # type: ignore
+  from embodied.envs import atari  # type: ignore
   from gym import envs
   # env = envs.make('Breakout-v4')
   # env = envs.make('Pong-v0')
 #   env = crafter.Env()  # Replace this with your Gym env.
-  env = atari.Atari("breakout", size=(64, 64), repeat=4, sticky=True, gray=False, actions='all', lives='unused', noops= 0, resize='opencv')
+  # env = atari.Atari("breakout", size=(64, 64), repeat=4, sticky=True,
+  #                   gray=False, actions='all', lives='unused', noops=0, resize='opencv')
+  env = atari.Atari("breakout", size=(64, 64), repeat=4, sticky=True,
+                    gray=False, actions='all', lives='unused', noops=0, resize='opencv')
   # env = from_gym.FromGym(env)
   env = dreamerv3.wrap_env(env, config)
   env = embodied.BatchEnv([env], parallel=False)
@@ -52,10 +55,13 @@ def main():
       config.batch_length, config.replay_size, logdir / 'replay')
   args = embodied.Config(
       **config.run, logdir=config.logdir,
-      batch_steps=config.batch_size * config.batch_length) # type: ignore
-  embodied.run.train(agent, env, replay, logger, args)
+      batch_steps=config.batch_size * config.batch_length)  # type: ignore
+  args = args.update({
+    'from_checkpoint': 'logdir/run3/checkpoint.ckpt'
+  })
+  # embodied.run.train(agent, env, replay, logger, args)
   # embodied.run.eval_only(agent, env, logger, args)
-
+  embodied.run.javascript_save(agent, env, logger, args)
 
 if __name__ == '__main__':
   main()

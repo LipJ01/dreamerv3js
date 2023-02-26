@@ -1,9 +1,13 @@
+
+from tensorflowjs.converters import jax_conversion
+
 import re
 
 import embodied
 import numpy as np
 
-def eval_only(agent, env, logger, args):
+
+def javascript_save(agent, env, logger, args):
   """Run evaluation loop."""
   logdir = embodied.Path(args.logdir)
   logdir.mkdirs()
@@ -20,6 +24,7 @@ def eval_only(agent, env, logger, args):
   timer.wrap('logger', logger, ['write'])
 
   nonzeros = set()
+
   def per_episode(ep):
     length = len(ep['reward']) - 1
     score = float(ep['reward'].astype(np.float64).sum())
@@ -49,12 +54,11 @@ def eval_only(agent, env, logger, args):
   checkpoint.agent = agent
   checkpoint.load(args.from_checkpoint, keys=['agent'])
 
-  print('Start evaluation loop.')
+  print('Convert Jax model to TensorFlow.js model.')
   policy = lambda *args: agent.policy(*args, mode='eval')
-  while step < args.steps:
-    driver(policy, steps=100)
-    if should_log(step):
-      logger.add(metrics.result())
-      logger.add(timer.stats(), prefix='timer')
-      logger.write(fps=True)
-  logger.write()
+  jax_conversion.convert_jax(
+      apply_fn=policy,
+      params=checkpoint.agent.params,
+      input_signatures=[(np.zeros((1, 64, 64, 3), dtype=np.float32),)],
+      model_dir='tfjs_model')
+  
