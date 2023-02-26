@@ -1,3 +1,11 @@
+# Dreamer V3 Inference on the Web
+
+A fork of [Danijar Hafner's DreamerV3][website] repository, with the goal of making it easy to export trained models to [TensorFlow.js][tfjs] for inference in the browser.
+
+To see a demo of this in action, see [demo][demo].
+
+## See below for the original README.
+
 # Mastering Diverse Domains through World Models
 
 A reimplementation of [DreamerV3][paper], a scalable and general reinforcement
@@ -128,3 +136,5 @@ environments.
 [website]: https://danijar.com/dreamerv3
 [tweet]: https://twitter.com/danijarh/status/1613161946223677441
 [example]: https://github.com/danijar/dreamerv3/blob/main/example.py
+[tfjs]: https://www.tensorflow.org/js
+[demo]: https://
