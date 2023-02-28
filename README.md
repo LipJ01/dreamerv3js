@@ -1,5 +1,7 @@
 # Dreamer V3 Inference on the Web
 
+## NOTE: THIS PROJECT IS UNFINISHED, I'd love to hear from anyone who got further than me.
+
 A fork of [Danijar Hafner's DreamerV3][website] repository, with the goal of making it easy to export trained models to [TensorFlow.js][tfjs] for inference in the browser.
 
 To see a demo of this in action, see [demo][demo].
